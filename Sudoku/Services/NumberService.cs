@@ -54,7 +54,7 @@ namespace Sudoku.Services
 
                 here: continue;
                 }
-                while (Numbers.Where(a => a.Value == 0).Count() > 0);
+                while (Numbers.Any(a => a.Value == 0));
             }
             
             return Numbers;
