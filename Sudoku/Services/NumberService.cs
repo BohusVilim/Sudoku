@@ -10,7 +10,12 @@ namespace Sudoku.Services
 {
     public class NumberService
     {
-        public List<Number> Numbers { get; set; } = new List<Number>();
+        private List<Number> _numbers = new List<Number>();
+        public List<Number> Numbers
+        {
+            get { return _numbers; }
+            set { _numbers = value; }
+        }
 
         public List<Number> NumbersGenerator()
         {
@@ -18,26 +23,26 @@ namespace Sudoku.Services
             {
                 do
                 {
-                    if (Numbers.Any(a => a.Value == 0))
+                    if (_numbers.Any(a => a.Value == 0))
                     {
-                        var numberOfRow = Numbers.Where(b => b.Value == 0).FirstOrDefault().Row;
-                        var rowForRemove = Numbers.Where(a => a.Row == numberOfRow).ToList();
+                        var numberOfRow = _numbers.Where(b => b.Value == 0).FirstOrDefault().Row;
+                        var rowForRemove = _numbers.Where(a => a.Row == numberOfRow).ToList();
 
                         foreach (var nmbr in rowForRemove)
                         {
-                            Numbers.Remove(nmbr);
+                            _numbers.Remove(nmbr);
                         }
 
                         for (int a = 1; a < 10 ; a++)
                         {
                             var newNumber = new Number();
-                            newNumber.Id = Numbers.Count + 1;
+                            newNumber.Id = _numbers.Count + 1;
                             newNumber.Row = RowAssigner(newNumber.Id);
                             newNumber.Column = ColumnAssigner(newNumber.Id);
                             newNumber.Section = SectionAssigner(newNumber);
                             newNumber.Value = ValueAssigner(newNumber);
 
-                            Numbers.Add(newNumber);
+                            _numbers.Add(newNumber);
                         }
 
                         goto here;
@@ -50,14 +55,14 @@ namespace Sudoku.Services
                     number.Section = SectionAssigner(number);
                     number.Value = ValueAssigner(number);
 
-                    Numbers.Add(number);
+                    _numbers.Add(number);
 
                 here: continue;
                 }
-                while (Numbers.Any(a => a.Value == 0));
+                while (_numbers.Any(a => a.Value == 0));
             }
             
-            return Numbers;
+            return _numbers;
         }
 
         public Enums.Rows RowAssigner(int id)
@@ -194,7 +199,7 @@ namespace Sudoku.Services
 
         public bool RowValidator(Number number, int value)
         {
-            if (Numbers.Where(a => a.Row == number.Row).Select(b => b.Value).Contains(value))
+            if (_numbers.Where(a => a.Row == number.Row).Select(b => b.Value).Contains(value))
                 return false;
 
             else
@@ -203,7 +208,7 @@ namespace Sudoku.Services
 
         public bool ColumnValidator(Number number, int value)
         {
-            if (Numbers.Where(a => a.Column == number.Column).Select(b => b.Value).Contains(value))
+            if (_numbers.Where(a => a.Column == number.Column).Select(b => b.Value).Contains(value))
                 return false;
 
             else
@@ -212,7 +217,7 @@ namespace Sudoku.Services
 
         public bool SectionValidator(Number number, int value)
         {
-            if (Numbers.Where(a => a.Section == number.Section).Select(b => b.Value).Contains(value))
+            if (_numbers.Where(a => a.Section == number.Section).Select(b => b.Value).Contains(value))
                 return false;
 
             else
