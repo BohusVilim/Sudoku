@@ -19,7 +19,7 @@ namespace Sudoku.Services
 
         public void CreateSudoku()
         {
-            _sudoku.Numbers.AddRange(_numberService.NumbersGenerator());
+            _sudoku.Numbers.AddRange(_numberService.GenerateNumbers());
 
             MakePuzzle();
         }

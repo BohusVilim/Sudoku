@@ -17,7 +17,7 @@ namespace Sudoku.Services
             set { _numbers = value; }
         }
 
-        public List<Number> NumbersGenerator()
+        public List<Number> GenerateNumbers()
         {
             for (int i = 1; i < 82; i++)
             {
@@ -44,20 +44,18 @@ namespace Sudoku.Services
 
                             _numbers.Add(newNumber);
                         }
-
-                        goto here;
                     }
+                    else
+                    {
+                        var number = new Number();
+                        number.Id = i;
+                        number.Row = RowAssigner(i);
+                        number.Column = ColumnAssigner(i);
+                        number.Section = SectionAssigner(number);
+                        number.Value = ValueAssigner(number);
 
-                    var number = new Number();
-                    number.Id = i;
-                    number.Row = RowAssigner(i);
-                    number.Column = ColumnAssigner(i);
-                    number.Section = SectionAssigner(number);
-                    number.Value = ValueAssigner(number);
-
-                    _numbers.Add(number);
-
-                here: continue;
+                        _numbers.Add(number);
+                    }
                 }
                 while (_numbers.Any(a => a.Value == 0));
             }
